@@ -67,8 +67,8 @@ class ApkSignature:
         # print('55460506 51284501 00000000000000000000000000000000000000000000')
         # import struct
         # if len(zfile._comment) > 8:
-        #     print(struct.unpack('<L',zfile._comment[0:4])[0])
-        #     print(struct.unpack('<L',zfile._comment[4:8])[0])
+        #     print(struct.unpack(b'<L',zfile._comment[0:4])[0])
+        #     print(struct.unpack(b'<L',zfile._comment[4:8])[0])
 
     def __del__(self):
         if self.zip_file:
@@ -521,7 +521,7 @@ class ApkSignature:
             buf = self.zip_file.fp.read(24)
             if buf[8:] != b'APK Sig Block 42':
                 break
-            sigin_foot = struct.unpack('<Q', buf[:8])[0]
+            sigin_foot = struct.unpack(b'<Q', buf[:8])[0]
             if sigin_foot < 24 or sigin_foot > filesize:
                 break
             ret_sig_start = offset_cd - sigin_foot - 8
@@ -529,13 +529,13 @@ class ApkSignature:
                 break
             self.zip_file.fp.seek(ret_sig_start)
             buf = self.zip_file.fp.read(sigin_foot + 8)
-            sigin_head = struct.unpack('<Q', buf[:8])[0]
+            sigin_head = struct.unpack(b'<Q', buf[:8])[0]
             if sigin_foot != sigin_head:
                 break
             idx = 8
             while idx + 12 <= sigin_head - 24:
-                length = struct.unpack('<Q', buf[idx:idx + 8])[0]
-                index = struct.unpack('<L', buf[idx + 8:idx + 12])[0]
+                length = struct.unpack(b'<Q', buf[idx:idx + 8])[0]
+                index = struct.unpack(b'<L', buf[idx + 8:idx + 12])[0]
                 s = buf[idx + 12:idx + 12 + length - 4]
                 ret_v2sigs[index] = s
                 idx += 12
@@ -550,7 +550,7 @@ class ApkSignature:
         datas = []
         idx = 0
         while idx + 4 <= len(data):
-            i = struct.unpack('<L', data[idx:idx + 4])[0]
+            i = struct.unpack(b'<L', data[idx:idx + 4])[0]
             s = data[idx + 4:idx + 4 + i]
             idx += 4 + i
             datas.append(s)
