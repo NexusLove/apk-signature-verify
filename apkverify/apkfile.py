@@ -415,14 +415,14 @@ class ZipInfo(object):
         # Try to decode the extra field.
         extra = self.extra
         while len(extra) >= 4:
-            tp, ln = struct.unpack('<HH', extra[:4])
+            tp, ln = struct.unpack(b'<HH', extra[:4])
             if tp == 1:
                 if ln >= 24:
-                    counts = struct.unpack('<QQQ', extra[4:28])
+                    counts = struct.unpack(b'<QQQ', extra[4:28])
                 elif ln == 16:
-                    counts = struct.unpack('<QQ', extra[4:20])
+                    counts = struct.unpack(b'<QQ', extra[4:20])
                 elif ln == 8:
-                    counts = struct.unpack('<Q', extra[4:12])
+                    counts = struct.unpack(b'<Q', extra[4:12])
                 elif ln == 0:
                     counts = ()
                 else:

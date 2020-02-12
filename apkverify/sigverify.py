@@ -538,7 +538,7 @@ def extract_list_by_int_prefix(data):
     datas = []
     idx = 0
     while idx + 4 <= len(data):
-        i = struct.unpack('<L', data[idx:idx + 4])[0]
+        i = struct.unpack(b'<L', data[idx:idx + 4])[0]
         s = data[idx + 4:idx + 4 + i]
         idx += 4 + i
         datas.append(s)
@@ -576,8 +576,8 @@ DSA：1024、2048、3072
     idx = 0
     for signature in extract_list_by_int_prefix(signatures):
         while idx + 8 <= len(signature):
-            alg = struct.unpack('<L', signature[idx:idx + 4])[0]
-            i = struct.unpack('<L', signature[idx + 4:idx + 8])[0]
+            alg = struct.unpack(b'<L', signature[idx:idx + 4])[0]
+            i = struct.unpack(b'<L', signature[idx + 4:idx + 8])[0]
             s = signature[idx + 8:idx + 8 + i]
             idx += 8 + i
             hash_type, hash_flag = hashDigestType.get(alg, ('UNKNOWN', 0))
@@ -612,8 +612,8 @@ DSA：1024、2048、3072
                 for digest in extract_list_by_int_prefix(digests):
                     idx = 0
                     while idx + 8 <= len(digest):
-                        alg2 = struct.unpack('<L', digest[idx:idx + 4])[0]
-                        i2 = struct.unpack('<L', digest[idx + 4:idx + 8])[0]
+                        alg2 = struct.unpack(b'<L', digest[idx:idx + 4])[0]
+                        i2 = struct.unpack(b'<L', digest[idx + 4:idx + 8])[0]
                         s2 = digest[idx + 8:idx + 8 + i2]
                         idx += 8 + i2
                         hash_type = hashDigestType.get(alg2, ('UNKNOWN', 0))
